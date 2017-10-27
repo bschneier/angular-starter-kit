@@ -14,5 +14,5 @@ This is a starter kit for building web applications in Angular 4. The following 
 2. **Clone this repository.** - `git clone https://github.com/bschneier/angular-starter-kit.git` or [download the zip](https://github.com/bschneier/angular-starter-kit/archive/master.zip)
 3. **Open a command prompt and navigate to the directory you just created.**
 4. **Install Node Packages.** - `npm install`
-5. **Run the app.** - `npm start`
+5. **Run the app.** - `npm start`<br/>
 This will check all packages for any security vulnerabilities, lint all typescript and css files and run all unit tests before deploying a local instance of the application in webpack-dev-server with hot reloading.
