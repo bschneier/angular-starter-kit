@@ -1,6 +1,6 @@
 # Angular 4 Web Application Starter Kit
 
-This is a starter kit for building web applications in Angular 4. The following features are configured:
+This is a starter kit for building web applications in Angular 4 using typescript. The following features are configured:
 
 - Security vulnerability checking with Node Security Platform
 - Linting using tslint for typescript and stylelint for css
