@@ -5,7 +5,7 @@ This is a starter kit for building web applications in Angular 4. The following 
 - Security vulnerability checking with Node Security Platform
 - Linting using tslint for typescript and stylelint for css
 - Webpack build process with a production build and local build with hot reloading using webpack-dev-server.
-- Unit testing and code coverage with Karma and Jasmine
+- Unit testing and code coverage with Karma and Jasmine<br/>
 **Currently there is no end-to-end testing framework configured, such as protractor. However, this may be added in the future.*
 
 ## Get Started
