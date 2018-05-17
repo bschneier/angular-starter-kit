@@ -2,13 +2,43 @@ const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const HtmlPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require('path');
 const commonConfig = require('./webpack.common');
 
 module.exports = webpackMerge(commonConfig, {
-  devtool: 'source-map',
+  devtool: 'cheap-module-source-map',
+  mode: 'production',
+  output: {
+    path: path.resolve('dist'),
+    publicPath: '/',
+    filename: '[name].[hash].js',
+    chunkFilename: '[id].[hash].chunk.js'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.s?css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          { loader: 'postcss-loader', options: { config: { path: path.resolve('config/postcss.config.js') } } },
+          'sass-loader',
+        ],
+      },
+      {
+        test: /\.(jpg|gif|png|mp4|woff|eot|svg|ttf)$/,
+        include: path.resolve('assets'),
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: '[path][name].[hash].[ext]'
+          }
+        }
+      }
+    ]
+  },
   plugins: [
-    new webpack.NoEmitOnErrorsPlugin(),
     new HtmlPlugin({
       inject: true,
       template: path.resolve('app/index.html'),
@@ -26,13 +56,16 @@ module.exports = webpackMerge(commonConfig, {
         useShortDoctype: true
       }
     }),
-    new webpack.optimize.UglifyJsPlugin(),
     new CompressionPlugin({
       asset: "[path].gz[query]",
       algorithm: "gzip",
       test: /\.js$|\.css$|\.html$/,
       threshold: 10240,
-      minRatio: 0
+      minRatio: 0.8
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].[hash].css',
+      chunkFilename: '[id].[hash].css',
     })
   ]
 });

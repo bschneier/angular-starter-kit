@@ -1,6 +1,6 @@
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
+const { CheckerPlugin } = require('awesome-typescript-loader')
 
 module.exports = {
   entry: {
@@ -8,61 +8,55 @@ module.exports = {
     'app': path.resolve('app/main.ts')
   },
   target: 'web',
-  output: {
-    path: path.resolve('dist'),
-    publicPath: '/',
-    filename: '[name].[hash].js',
-    chunkFilename: '[id].[hash].chunk.js'
-  },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.ts$/,
         include: path.resolve('app'),
-        loaders: [
+        use: [
           {
             loader: 'awesome-typescript-loader',
-            options: { configFileName: path.resolve('config/tsconfig.json') }
-          } , 'angular2-template-loader'
+            options: { configFileName: path.resolve('tsconfig.json') }
+          },
+          'angular2-template-loader'
         ]
       },
       {
         test: /\.html$/,
-        loader: 'html-loader'
-      },
-      {
-        test: /\.s?css$/,
-        include: path.resolve('app'),
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'sass-loader']
-        })
-      },
-      {
-        test: /\.(jpg|gif|png)$/,
-        include: path.resolve('assets'),
-        loader: 'file-loader',
-        options: {
-          name: 'media/images/[name].[hash].[ext]'
+        use: {
+          loader: 'html-loader',
+          options: {
+            attrs: ['img:src', 'link:href']
+          }
         }
       },
-      {
-        test: /\.mp4$/,
-        include: path.resolve('media/videos'),
-        loader: 'file-loader',
-        options: {
-          name: 'media/videos/[name].[hash].[ext]'
-        }
-      }
+      // Ignore warnings about System.import in Angular
+      { test: /[\/\\]@angular[\/\\].+\.js$/, parser: { system: true } }
     ]
   },
   resolve: {
     extensions: ['.ts', '.js']
   },
+  optimization: {
+    splitChunks: {
+      chunks: "all"
+    }
+  },
   plugins: [
-    new ExtractTextPlugin('[name].[hash].css'),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: ['app', 'vendor']
-    })
-  ]
+    new CheckerPlugin(),
+    new webpack.ContextReplacementPlugin(/(.+)?angular(\\|\/)core(.+)?/, path.resolve(__dirname, '../app')),
+  ],
+  stats: {
+    assets: true,
+    builtAt: false,
+    chunks: true,
+    entrypoints: false,
+    errors: true,
+    errorDetails: true,
+    hash: false,
+    modules: false,
+    timings: false,
+    version: false,
+    warnings: true
+  }
 };

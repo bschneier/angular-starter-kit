@@ -3,7 +3,7 @@
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
-    "sourceMap": false,
+    "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": false,
@@ -12,14 +12,14 @@
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
     "typeRoots": [
-      "../node_modules/@types"
+      "node_modules/@types"
     ]
   },
   "compileOnSave": true,
   "include": [
-    "../app/**/*.ts"
+    "app/**/*.ts"
   ],
   "exclude": [
-    "../node_modules"
+    "node_modules"
   ]
 }
